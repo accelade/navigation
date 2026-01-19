@@ -1,0 +1,64 @@
+{
+    "name": "accelade/navigation",
+    "description": "Build beautiful, accessible navigation menus for Laravel applications with Blade components",
+    "version": "1.0.0",
+    "type": "library",
+    "license": "MIT",
+    "keywords": [
+        "laravel",
+        "accelade",
+        "navigation",
+        "menu",
+        "sidebar",
+        "blade-components"
+    ],
+    "authors": [
+        {
+            "name": "Fady Mondy",
+            "email": "info@3x1.io"
+        }
+    ],
+    "require": {
+        "php": "^8.2|^8.3|^8.4",
+        "illuminate/support": "^11.0|^12.0",
+        "accelade/accelade": "^1.0"
+    },
+    "require-dev": {
+        "laravel/pint": "^1.18",
+        "orchestra/testbench": "^9.0|^10.0",
+        "pestphp/pest": "^3.0|^4.0",
+        "pestphp/pest-plugin-laravel": "^3.0|^4.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Accelade\\Navigation\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Accelade\\Navigation\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/pest --no-coverage",
+        "test:coverage": "vendor/bin/pest --coverage",
+        "format": "vendor/bin/pint",
+        "format:test": "vendor/bin/pint --test",
+        "mago": "../../mago lint"
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Accelade\\Navigation\\NavigationServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
