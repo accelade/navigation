@@ -117,9 +117,9 @@ $navigation = [
 
 The package includes comprehensive documentation available in the Accelade docs portal:
 
-- **Overview** - Introduction and basic concepts
-- **Nav Item** - Item configuration and options
-- **Nav Group** - Collapsible groups and nesting
+- [Getting Started](docs/getting-started.md) - Installation and basic usage
+- [Nav Item](docs/nav-item.md) - Item configuration and options
+- [Nav Group](docs/nav-group.md) - Collapsible groups and nesting
 
 ### Badge Colors
 
