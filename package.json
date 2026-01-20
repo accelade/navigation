@@ -1,0 +1,48 @@
+{
+    "name": "@accelade/navigation",
+    "version": "0.1.0",
+    "description": "Sidebar navigation components for Accelade - interactive sidebar with keyboard navigation and accessibility support",
+    "author": "Fady Mondy <info@3x1.io> (https://3x1.io)",
+    "license": "MIT",
+    "homepage": "https://github.com/accelade/navigation",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/accelade/navigation.git"
+    },
+    "bugs": {
+        "url": "https://github.com/accelade/navigation/issues"
+    },
+    "private": true,
+    "type": "module",
+    "main": "dist/navigation.js",
+    "module": "dist/navigation.esm.js",
+    "types": "dist/index.d.ts",
+    "exports": {
+        ".": {
+            "types": "./dist/index.d.ts",
+            "import": "./dist/navigation.esm.js",
+            "require": "./dist/navigation.js"
+        }
+    },
+    "scripts": {
+        "dev": "vite",
+        "build": "vite build",
+        "typecheck": "tsc --noEmit",
+        "demo": "npx serve . -p 3000"
+    },
+    "devDependencies": {
+        "@types/node": "^25.0.9",
+        "terser": "^5.31.0",
+        "typescript": "^5.7.0",
+        "vite": "^7.3.1"
+    },
+    "keywords": [
+        "accelade",
+        "laravel",
+        "blade",
+        "navigation",
+        "sidebar",
+        "menu",
+        "accessibility"
+    ]
+}

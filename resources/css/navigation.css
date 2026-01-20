@@ -1,0 +1,699 @@
+/**
+ * Accelade Navigation Package - CSS
+ *
+ * Base styles for navigation sidebar components.
+ * These styles are minimal and use CSS custom properties for theming.
+ * Override with your own styles or Tailwind classes.
+ */
+
+/* ========================================
+   CSS Custom Properties (Theming)
+   ======================================== */
+:root {
+    /* Sidebar dimensions */
+    --nav-sidebar-width: 17rem;
+    --nav-sidebar-width-icon: 4.5rem;
+    --nav-sidebar-width-mobile: 18rem;
+
+    /* Timing */
+    --nav-transition-duration: 200ms;
+    --nav-transition-timing: cubic-bezier(0.4, 0, 0.2, 1);
+
+    /* Colors - Light Mode (customizable via theme) */
+    --nav-sidebar-bg: #ffffff;
+    --nav-sidebar-fg: #374151;
+    --nav-sidebar-border: #e5e7eb;
+    --nav-sidebar-header-bg: #f9fafb;
+    --nav-sidebar-hover-bg: #f3f4f6;
+    --nav-sidebar-active-bg: #eff6ff;
+    --nav-sidebar-active-fg: #1d4ed8;
+    --nav-sidebar-icon: #9ca3af;
+    --nav-sidebar-icon-active: #3b82f6;
+    --nav-backdrop-bg: rgba(0, 0, 0, 0.5);
+}
+
+/* Dark mode colors */
+.dark,
+[data-theme="dark"] {
+    --nav-sidebar-bg: #1f2937;
+    --nav-sidebar-fg: #d1d5db;
+    --nav-sidebar-border: #374151;
+    --nav-sidebar-header-bg: #111827;
+    --nav-sidebar-hover-bg: #374151;
+    --nav-sidebar-active-bg: rgba(59, 130, 246, 0.1);
+    --nav-sidebar-active-fg: #60a5fa;
+    --nav-sidebar-icon: #6b7280;
+    --nav-sidebar-icon-active: #60a5fa;
+    --nav-backdrop-bg: rgba(0, 0, 0, 0.7);
+}
+
+/* ========================================
+   Navigation Container
+   ======================================== */
+[data-slot="nav"] {
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+}
+
+[data-slot="nav"][data-direction="horizontal"] {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+[data-slot="nav"][data-direction="horizontal"] [data-slot="nav-item"] {
+    padding: 0.375rem 0.75rem;
+}
+
+[data-slot="nav"][data-direction="horizontal"] [data-slot="nav-item-label"] {
+    flex: none;
+}
+
+/* ========================================
+   Navigation Item
+   ======================================== */
+[data-slot="nav-item"] {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--nav-sidebar-fg);
+    text-decoration: none;
+    background: transparent;
+    transition: background-color 150ms ease, color 150ms ease;
+}
+
+[data-slot="nav-item"]:hover {
+    background-color: var(--nav-sidebar-hover-bg);
+}
+
+[data-slot="nav-item"]:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--nav-sidebar-active-fg);
+}
+
+[data-slot="nav-item"]:focus:not(:focus-visible) {
+    box-shadow: none;
+}
+
+[data-slot="nav-item"]:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--nav-sidebar-active-fg);
+}
+
+[data-slot="nav-item"][data-active="true"] {
+    background-color: var(--nav-sidebar-active-bg);
+    color: var(--nav-sidebar-active-fg);
+}
+
+/* Nav Item Icon */
+[data-slot="nav-item-icon"] {
+    width: 1.25rem;
+    height: 1.25rem;
+    flex-shrink: 0;
+    color: var(--nav-sidebar-icon);
+    transition: color 150ms ease;
+}
+
+[data-slot="nav-item"]:hover [data-slot="nav-item-icon"] {
+    color: var(--nav-sidebar-fg);
+}
+
+[data-slot="nav-item"][data-active="true"] [data-slot="nav-item-icon"] {
+    color: var(--nav-sidebar-icon-active);
+}
+
+/* Nav Item Label */
+[data-slot="nav-item-label"] {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Nav Item Badge */
+[data-slot="nav-item-badge"] {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 1.25rem;
+    height: 1.25rem;
+    padding: 0 0.375rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    border-radius: 9999px;
+    margin-left: auto;
+}
+
+[data-slot="nav-item-badge"][data-color="primary"] {
+    background-color: #3b82f6;
+    color: white;
+}
+
+[data-slot="nav-item-badge"][data-color="success"] {
+    background-color: #10b981;
+    color: white;
+}
+
+[data-slot="nav-item-badge"][data-color="warning"] {
+    background-color: #f59e0b;
+    color: white;
+}
+
+[data-slot="nav-item-badge"][data-color="danger"] {
+    background-color: #ef4444;
+    color: white;
+}
+
+[data-slot="nav-item-badge"][data-color="info"] {
+    background-color: #0ea5e9;
+    color: white;
+}
+
+[data-slot="nav-item-badge"][data-color="gray"] {
+    background-color: var(--nav-sidebar-border);
+    color: var(--nav-sidebar-fg);
+}
+
+/* Nav Item External Icon */
+[data-slot="nav-item-external-icon"] {
+    width: 1rem;
+    height: 1rem;
+    flex-shrink: 0;
+    color: var(--nav-sidebar-icon);
+    opacity: 0.6;
+}
+
+/* ========================================
+   Navigation Group
+   ======================================== */
+[data-slot="nav-group"] {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Nav Group Header */
+[data-slot="nav-group-header"] {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--nav-sidebar-fg);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    text-align: left;
+    transition: background-color 150ms ease;
+}
+
+[data-slot="nav-group-header"][data-collapsible="true"]:hover {
+    background-color: var(--nav-sidebar-hover-bg);
+}
+
+[data-slot="nav-group-header"][data-collapsible="false"] {
+    cursor: default;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--nav-sidebar-icon);
+    padding-top: 0.75rem;
+    padding-bottom: 0.375rem;
+}
+
+/* Nav Group Icon */
+[data-slot="nav-group-icon"] {
+    width: 1.25rem;
+    height: 1.25rem;
+    flex-shrink: 0;
+    color: var(--nav-sidebar-icon);
+}
+
+/* Nav Group Label */
+[data-slot="nav-group-label"] {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Nav Group Chevron */
+[data-slot="nav-group-chevron"] {
+    width: 1rem;
+    height: 1rem;
+    flex-shrink: 0;
+    color: var(--nav-sidebar-icon);
+    transition: transform 200ms ease;
+}
+
+/* Nav Group Content */
+[data-slot="nav-group-content"] {
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+    padding-left: 0.5rem;
+    margin-left: 0.875rem;
+    border-left: 2px solid var(--nav-sidebar-border);
+    overflow: hidden;
+}
+
+/* ========================================
+   Sidebar Wrapper
+   ======================================== */
+[data-slot="sidebar-wrapper"] {
+    --sidebar-width: var(--nav-sidebar-width);
+    --sidebar-width-icon: var(--nav-sidebar-width-icon);
+    --sidebar-width-mobile: var(--nav-sidebar-width-mobile);
+}
+
+/* ========================================
+   Sidebar Base Styles
+   ======================================== */
+[data-slot="sidebar"] {
+    background-color: var(--nav-sidebar-bg);
+    border-color: var(--nav-sidebar-border);
+    transition: width var(--nav-transition-duration) var(--nav-transition-timing),
+                transform var(--nav-transition-duration) var(--nav-transition-timing);
+}
+
+[data-sidebar="sidebar"] {
+    background-color: var(--nav-sidebar-bg);
+    color: var(--nav-sidebar-fg);
+}
+
+/* ========================================
+   Sidebar Header
+   ======================================== */
+[data-sidebar="header"] {
+    border-color: var(--nav-sidebar-border);
+}
+
+/* ========================================
+   Sidebar Content (Scrollable Area)
+   ======================================== */
+[data-sidebar="content"] {
+    scrollbar-width: thin;
+    scrollbar-color: var(--nav-sidebar-border) transparent;
+}
+
+[data-sidebar="content"]::-webkit-scrollbar {
+    width: 6px;
+}
+
+[data-sidebar="content"]::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+[data-sidebar="content"]::-webkit-scrollbar-thumb {
+    background-color: var(--nav-sidebar-border);
+    border-radius: 3px;
+}
+
+[data-sidebar="content"]::-webkit-scrollbar-thumb:hover {
+    background-color: var(--nav-sidebar-icon);
+}
+
+/* ========================================
+   Sidebar Footer
+   ======================================== */
+[data-sidebar="footer"] {
+    border-color: var(--nav-sidebar-border);
+}
+
+/* ========================================
+   Menu Items
+   ======================================== */
+[data-sidebar="menu"] {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+[data-sidebar="menu-button"] {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+    gap: 0.75rem;
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--nav-sidebar-fg);
+    text-decoration: none;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    transition: background-color 150ms ease, color 150ms ease;
+}
+
+[data-sidebar="menu-button"]:hover {
+    background-color: var(--nav-sidebar-hover-bg);
+}
+
+[data-sidebar="menu-button"]:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--nav-sidebar-active-fg);
+}
+
+[data-sidebar="menu-button"]:focus:not(:focus-visible) {
+    box-shadow: none;
+}
+
+[data-sidebar="menu-button"]:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--nav-sidebar-active-fg);
+}
+
+/* Active state */
+[data-sidebar="menu-button"][data-active="true"] {
+    background-color: var(--nav-sidebar-active-bg);
+    color: var(--nav-sidebar-active-fg);
+}
+
+/* Icons in menu buttons */
+[data-sidebar="menu-button"] svg,
+[data-sidebar="menu-button"] [data-slot="icon"] {
+    width: 1.25rem;
+    height: 1.25rem;
+    flex-shrink: 0;
+    color: var(--nav-sidebar-icon);
+    transition: color 150ms ease;
+}
+
+[data-sidebar="menu-button"]:hover svg,
+[data-sidebar="menu-button"]:hover [data-slot="icon"] {
+    color: var(--nav-sidebar-fg);
+}
+
+[data-sidebar="menu-button"][data-active="true"] svg,
+[data-sidebar="menu-button"][data-active="true"] [data-slot="icon"] {
+    color: var(--nav-sidebar-icon-active);
+}
+
+/* Size variants */
+[data-sidebar="menu-button"][data-size="sm"] {
+    padding: 0.375rem 0.5rem;
+    font-size: 0.8125rem;
+}
+
+[data-sidebar="menu-button"][data-size="lg"] {
+    padding: 0.625rem 1rem;
+    font-size: 0.9375rem;
+}
+
+/* ========================================
+   Submenu
+   ======================================== */
+[data-sidebar="menu-sub"] {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    padding-left: 1rem;
+    border-left: 2px solid var(--nav-sidebar-border);
+    margin-left: 1rem;
+}
+
+[data-sidebar="menu-sub-button"] {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 0.375rem 0.75rem;
+    gap: 0.5rem;
+    border-radius: 0.375rem;
+    font-size: 0.8125rem;
+    color: var(--nav-sidebar-fg);
+    text-decoration: none;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    transition: background-color 150ms ease, color 150ms ease;
+}
+
+[data-sidebar="menu-sub-button"]:hover {
+    background-color: var(--nav-sidebar-hover-bg);
+}
+
+[data-sidebar="menu-sub-button"][data-active="true"] {
+    background-color: var(--nav-sidebar-active-bg);
+    color: var(--nav-sidebar-active-fg);
+}
+
+/* ========================================
+   Menu Badge
+   ======================================== */
+[data-sidebar="menu-badge"] {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 1.25rem;
+    height: 1.25rem;
+    padding: 0 0.375rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    border-radius: 9999px;
+    background-color: var(--nav-sidebar-active-fg);
+    color: white;
+}
+
+/* ========================================
+   Sidebar Trigger Button
+   ======================================== */
+[data-sidebar="trigger"] {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    color: var(--nav-sidebar-icon);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    transition: background-color 150ms ease, color 150ms ease;
+}
+
+[data-sidebar="trigger"]:hover {
+    background-color: var(--nav-sidebar-hover-bg);
+    color: var(--nav-sidebar-fg);
+}
+
+[data-sidebar="trigger"]:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--nav-sidebar-active-fg);
+}
+
+[data-sidebar="trigger"]:focus:not(:focus-visible) {
+    box-shadow: none;
+}
+
+[data-sidebar="trigger"] svg {
+    width: 1.25rem;
+    height: 1.25rem;
+}
+
+/* ========================================
+   Sidebar Separator
+   ======================================== */
+[data-sidebar="separator"] {
+    height: 1px;
+    background-color: var(--nav-sidebar-border);
+    margin: 0.5rem 0;
+}
+
+/* ========================================
+   Sidebar Rail (Minimal Collapse Handle)
+   ======================================== */
+[data-sidebar="rail"] {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    cursor: ew-resize;
+    background: transparent;
+    transition: background-color 150ms ease;
+}
+
+[data-sidebar="rail"]:hover {
+    background-color: var(--nav-sidebar-active-fg);
+}
+
+[data-sidebar="rail"][data-side="left"] {
+    right: 0;
+}
+
+[data-sidebar="rail"][data-side="right"] {
+    left: 0;
+}
+
+/* ========================================
+   Collapsed Sidebar States
+   ======================================== */
+[data-slot="sidebar"][data-state="collapsed"] [data-sidebar="sidebar"] {
+    width: var(--sidebar-width-icon);
+}
+
+[data-slot="sidebar"][data-state="collapsed"] [data-sidebar="menu-button"] {
+    justify-content: center;
+    padding: 0.5rem;
+}
+
+[data-slot="sidebar"][data-state="collapsed"] [data-sidebar="menu-button"] span:not(.sr-only) {
+    display: none;
+}
+
+/* Hide badges in collapsed state */
+[data-slot="sidebar"][data-state="collapsed"] [data-sidebar="menu-badge"] {
+    display: none;
+}
+
+/* Hide submenu in collapsed state */
+[data-slot="sidebar"][data-state="collapsed"] [data-sidebar="menu-sub"] {
+    display: none;
+}
+
+/* Collapsible icon mode */
+[data-slot="sidebar"][data-collapsible="icon"] [data-sidebar="header"],
+[data-slot="sidebar"][data-collapsible="icon"] [data-sidebar="footer"] {
+    overflow: hidden;
+}
+
+/* Group styles */
+.group[data-collapsible="icon"] [data-sidebar="menu-button"] {
+    width: var(--sidebar-width-icon);
+    justify-content: center;
+}
+
+/* ========================================
+   Mobile Backdrop
+   ======================================== */
+.nav-mobile-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 40;
+    background-color: var(--nav-backdrop-bg);
+    backdrop-filter: blur(4px);
+}
+
+/* ========================================
+   Inset (Main Content Area)
+   ======================================== */
+[data-sidebar="inset"] {
+    min-height: 100vh;
+    transition: margin var(--nav-transition-duration) var(--nav-transition-timing);
+}
+
+/* ========================================
+   Animations
+   ======================================== */
+@keyframes nav-slide-in-left {
+    from {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes nav-slide-out-left {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+}
+
+@keyframes nav-slide-in-right {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes nav-slide-out-right {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+}
+
+@keyframes nav-fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes nav-fade-out {
+    from { opacity: 1; }
+    to { opacity: 0; }
+}
+
+/* ========================================
+   Utility Classes
+   ======================================== */
+.nav-hidden {
+    display: none !important;
+}
+
+.nav-visible {
+    display: block;
+}
+
+.nav-sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* ========================================
+   Print Styles
+   ======================================== */
+@media print {
+    [data-slot="sidebar"],
+    [data-sidebar="sidebar"],
+    [data-sidebar="trigger"] {
+        display: none !important;
+    }
+
+    [data-sidebar="inset"] {
+        margin: 0 !important;
+    }
+}
+
+/* ========================================
+   Reduced Motion
+   ======================================== */
+@media (prefers-reduced-motion: reduce) {
+    [data-slot="sidebar"],
+    [data-sidebar="sidebar"],
+    [data-sidebar="menu-button"],
+    [data-sidebar="trigger"],
+    [data-sidebar="inset"] {
+        transition: none !important;
+    }
+}

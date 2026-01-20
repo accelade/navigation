@@ -1,16 +1,12 @@
 @props([
     'direction' => 'vertical',
-    'collapsible' => false,
 ])
 
+{{-- Navigation Container - Style-free, add classes via attributes --}}
 <nav
-    {{ $attributes->class([
-        'space-y-1' => $direction === 'vertical',
-        'flex items-center gap-1' => $direction === 'horizontal',
-    ]) }}
-    @if($collapsible)
-        x-data="{ collapsed: false }"
-    @endif
+    data-slot="nav"
+    data-direction="{{ $direction }}"
+    {{ $attributes }}
 >
     {{ $slot }}
 </nav>

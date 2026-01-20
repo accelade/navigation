@@ -12,48 +12,34 @@
 @php
     $isActive = $active || ($href && request()->fullUrlIs($href . '*'));
     $displayIcon = $isActive && $activeIcon ? $activeIcon : $icon;
-
-    $badgeColors = [
-        'primary' => 'bg-primary-100 text-primary-700 dark:bg-primary-900 dark:text-primary-300',
-        'success' => 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300',
-        'warning' => 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-300',
-        'danger' => 'bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300',
-        'info' => 'bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300',
-        'gray' => 'bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300',
-    ];
-
-    $badgeClass = $badgeColors[$badgeColor ?? 'gray'] ?? $badgeColors['gray'];
 @endphp
 
-<a
+{{-- Navigation Item - Style-free, add classes via attributes --}}
+<x-accelade::link
     href="{{ $href }}"
-    @if($external) target="_blank" rel="noopener noreferrer" @endif
-    {{ $attributes->class([
-        'group flex items-center gap-x-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors',
-        'bg-gray-100 text-gray-900 dark:bg-gray-800 dark:text-white' => $isActive,
-        'text-gray-700 hover:bg-gray-50 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-800 dark:hover:text-white' => ! $isActive,
-    ]) }}
+    :external="$external"
+    data-slot="nav-item"
+    data-active="{{ $isActive ? 'true' : 'false' }}"
+    {{ $attributes }}
 >
     @if($displayIcon)
         <x-dynamic-component
             :component="$displayIcon"
-            @class([
-                'h-5 w-5 shrink-0',
-                'text-gray-900 dark:text-white' => $isActive,
-                'text-gray-400 group-hover:text-gray-500 dark:text-gray-500 dark:group-hover:text-gray-400' => ! $isActive,
-            ])
+            data-slot="nav-item-icon"
         />
     @endif
 
-    <span class="truncate">{{ $label }}</span>
+    <span data-slot="nav-item-label">{{ $label }}</span>
 
     @if($badge)
-        <span class="ml-auto inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium {{ $badgeClass }}">
+        <span data-slot="nav-item-badge" data-color="{{ $badgeColor ?? 'gray' }}">
             {{ $badge }}
         </span>
     @endif
 
     @if($external)
-        <x-heroicon-m-arrow-top-right-on-square class="ml-auto h-4 w-4 text-gray-400" />
+        <svg data-slot="nav-item-external-icon" class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+        </svg>
     @endif
-</a>
+</x-accelade::link>

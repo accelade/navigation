@@ -5,52 +5,69 @@
     'collapsed' => false,
 ])
 
-<div
-    x-data="{ open: @js(! $collapsed) }"
-    {{ $attributes->class(['space-y-1']) }}
->
-    {{-- Group Header --}}
-    @if($collapsible)
-        <button
-            type="button"
-            @click="open = !open"
-            class="group flex w-full items-center gap-x-3 rounded-lg px-3 py-2 text-left text-sm font-semibold text-gray-900 dark:text-white hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
-        >
-            @if($icon)
-                <x-dynamic-component
-                    :component="$icon"
-                    class="h-5 w-5 shrink-0 text-gray-400 group-hover:text-gray-500 dark:text-gray-500 dark:group-hover:text-gray-400"
-                />
-            @endif
-
-            <span class="flex-1 truncate">{{ $label }}</span>
-
-            <x-heroicon-m-chevron-right
-                x-bind:class="{ 'rotate-90': open }"
-                class="h-4 w-4 shrink-0 text-gray-400 transition-transform duration-200"
-            />
-        </button>
-    @else
-        <div class="flex items-center gap-x-3 px-3 py-2 text-sm font-semibold text-gray-900 dark:text-white">
-            @if($icon)
-                <x-dynamic-component
-                    :component="$icon"
-                    class="h-5 w-5 shrink-0 text-gray-400"
-                />
-            @endif
-
-            <span class="truncate">{{ $label }}</span>
-        </div>
-    @endif
-
-    {{-- Group Items --}}
-    <div
+{{-- Navigation Group - Style-free, add classes via attributes --}}
+<x-accelade::toggle :data="!$collapsed">
+    <div data-slot="nav-group" {{ $attributes }}>
+        {{-- Group Header --}}
         @if($collapsible)
-            x-show="open"
-            x-collapse
+            <button
+                type="button"
+                @click.prevent="toggle()"
+                data-slot="nav-group-header"
+                data-collapsible="true"
+            >
+                @if($icon)
+                    <x-dynamic-component
+                        :component="$icon"
+                        data-slot="nav-group-icon"
+                    />
+                @endif
+
+                <span data-slot="nav-group-label">{{ $label }}</span>
+
+                <svg
+                    a-class="{ 'rotate-90': toggled }"
+                    data-slot="nav-group-chevron"
+                    class="transition-transform duration-200"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                >
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                </svg>
+            </button>
+        @else
+            <div data-slot="nav-group-header" data-collapsible="false">
+                @if($icon)
+                    <x-dynamic-component
+                        :component="$icon"
+                        data-slot="nav-group-icon"
+                    />
+                @endif
+
+                <span data-slot="nav-group-label">{{ $label }}</span>
+            </div>
         @endif
-        class="ml-4 space-y-1"
-    >
-        {{ $slot }}
+
+        {{-- Group Items --}}
+        @if($collapsible)
+            <x-accelade::transition
+                show="toggled"
+                enter="transition-all ease-out duration-200"
+                enter-start="opacity-0 max-h-0"
+                enter-end="opacity-100 max-h-96"
+                leave="transition-all ease-in duration-150"
+                leave-start="opacity-100 max-h-96"
+                leave-end="opacity-0 max-h-0"
+            >
+                <div data-slot="nav-group-content">
+                    {{ $slot }}
+                </div>
+            </x-accelade::transition>
+        @else
+            <div data-slot="nav-group-content">
+                {{ $slot }}
+            </div>
+        @endif
     </div>
-</div>
+</x-accelade::toggle>
